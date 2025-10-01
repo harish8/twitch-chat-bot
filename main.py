@@ -1,10 +1,11 @@
 from fastapi import FastAPI
+from bot import fetch_token
 
 app = FastAPI()
 
-def main():
-    print("Hello from twitch-chat-bot!")
+# Get an Oauth token from Twitch
+@app.get("/get-token")
+async def get_token():
+    return await fetch_token()
 
 
-if __name__ == "__main__":
-    main()
