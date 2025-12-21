@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from twitchio.ext import commands
 import logging
+import random
 # import httpx
 import os
 
@@ -26,7 +27,7 @@ class Bot(commands.Bot):
     async def event_ready(self):
         print(f"Logged in as | {self.nick}")
         print(f"User id is | {self.user_id}")
-
+        
     async def event_message(self, message):
         if message.echo:
             return
@@ -45,7 +46,19 @@ class Bot(commands.Bot):
     async def hello(self, ctx):
         await ctx.send(f"Hello {ctx.author.name}!")
 
+    @commands.command(name="command_name")
+    async def command_name(self, ctx):
+        names_taken = set()
+        
+        with open('file_name.txt', 'r') as file:
+            names = [line.strip() for line in file if line.strip() and not line.strip().startswith('#')]
 
+        random_name = random.choice(names)
+                
+        # TODO change the logic to the names_taken shouldn't repeat again in the stream. 
+        names_taken.add(random_name)
+        await ctx.send(f" Choosen random name : {random_name}")
+        
 if __name__ == '__main__':
     bot = Bot()
     bot.run()
